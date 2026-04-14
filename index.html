@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wang Pan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #21262d;
+      --text:     #e6edf3;
+      --muted:    #8b949e;
+      --accent:   #58a6ff;
+      --accent2:  #bc8cff;
+      --green:    #3fb950;
+      --radius:   12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 7rem 2rem 4rem;
+      max-width: 860px; margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--accent); background: rgba(88,166,255,.1);
+      border: 1px solid rgba(88,166,255,.3);
+      padding: .25rem .75rem; border-radius: 99px;
+      margin-bottom: 1.5rem; letter-spacing: .05em;
+    }
+    #hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -.02em;
+      background: linear-gradient(135deg, var(--text) 0%, var(--muted) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: .75rem;
+    }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .hero-desc {
+      font-size: 1rem; color: var(--muted);
+      max-width: 520px; margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .55rem 1.25rem; border-radius: 8px;
+      font-size: .9rem; font-weight: 600;
+      transition: opacity .2s, transform .15s;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: .85; transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ── SECTION ── */
+    section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+    .section-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-size: 1.75rem; font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    .section-desc { color: var(--muted); margin-bottom: 2.5rem; font-size: .95rem; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      display: flex; flex-direction: column; gap: .5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .project-header {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .project-name {
+      font-weight: 700; font-size: .95rem; color: var(--accent);
+    }
+    .project-name:hover { text-decoration: underline; }
+    .project-org {
+      font-size: .7rem; color: var(--muted);
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      padding: .1rem .5rem; border-radius: 99px;
+    }
+    .project-desc { font-size: .85rem; color: var(--muted); flex: 1; line-height: 1.55; }
+    .project-footer {
+      display: flex; align-items: center; gap: .75rem; margin-top: .25rem;
+    }
+    .lang-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    }
+    .lang-label { font-size: .78rem; color: var(--muted); }
+
+    /* language colors */
+    .lang-python  { background: #3572A5; }
+    .lang-ts      { background: #3178C6; }
+    .lang-rust    { background: #dea584; }
+    .lang-lean    { background: #7b4f9e; }
+    .lang-html    { background: #e44b23; }
+    .lang-tex     { background: #3D6117; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: flex; flex-wrap: wrap; gap: .6rem;
+    }
+    .skill-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .35rem .9rem;
+      font-size: .85rem; color: var(--text);
+      transition: border-color .2s;
+    }
+    .skill-chip:hover { border-color: var(--accent); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 860px; margin: 0 auto;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2.5rem 1rem;
+      font-size: .85rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      #hero, section { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Wang Pan</span>
+  <div class="nav-links">
+    <a href="#projects">项目</a>
+    <a href="#skills">技术栈</a>
+    <a href="https://github.com/Camille1024" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <span class="hero-tag">AI Engineer · Researcher</span>
+  <h1>Wang Pan</h1>
+  <p class="hero-sub">AI 工程 · 推荐系统 · 形式化数学</p>
+  <p class="hero-desc">
+    专注于 AI 工具开发与系统研究，在 GAIR-NLP 从事 Agentic LLM 平台与语音交互工具的研发，
+    同时探索形式化数学证明的自动化。
+  </p>
+  <div class="hero-btns">
+    <a class="btn btn-primary" href="https://github.com/Camille1024" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a class="btn btn-secondary" href="#projects">查看项目 ↓</a>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Projects</p>
+  <h2 class="section-title">项目</h2>
+  <p class="section-desc">个人开发与团队合作的代表性项目</p>
+
+  <div class="projects-grid">
+
+    <!-- 个人项目 -->
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/Camille1024/typeless" target="_blank">Typeless</a>
+      </div>
+      <p class="project-desc">Windows AI 语音听写工具。按住热键说话，松开即得 AI 润色后的文字，自动注入到当前输入框。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-python"></span>
+        <span class="lang-label">Python</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/Camille1024/LongRetriever" target="_blank">LongRetriever</a>
+      </div>
+      <p class="project-desc">推荐系统超长序列用户兴趣建模与多路召回框架，在 Amazon Books 30 万物品全量检索上验证 ICT 等核心机制。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-python"></span>
+        <span class="lang-label">Python · PyTorch</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/Camille1024/recommendpipline" target="_blank">recommendpipline</a>
+      </div>
+      <p class="project-desc">端到端推荐系统 Pipeline：超长序列召回 → 特征工程 → DIN 精排，在 Amazon Books 全量测试集完整验证。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-python"></span>
+        <span class="lang-label">Python · PyTorch</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/Camille1024/lean-proof-graph" target="_blank">lean-proof-graph</a>
+      </div>
+      <p class="project-desc">Lean 4 形式化证明的交互式 3D 依赖图可视化，覆盖 FormalMathProject 与 KervaireInvariant 两个项目。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-html"></span>
+        <span class="lang-label">HTML · JavaScript</span>
+      </div>
+    </div>
+
+    <!-- GAIR-NLP -->
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/GAIR-NLP/DAIR" target="_blank">DAIR</a>
+        <span class="project-org">GAIR-NLP</span>
+      </div>
+      <p class="project-desc">Deep Cognition — Agentic LLM 平台，面向复杂任务的多智能体协作框架。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-python"></span>
+        <span class="lang-label">Python</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/GAIR-NLP/wesay" target="_blank">wesay</a>
+        <span class="project-org">GAIR-NLP</span>
+      </div>
+      <p class="project-desc">桌面端语音转文字 + AI 润色工具，本地优先，支持多语言翻译与全局热键，三端通用。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-rust"></span>
+        <span class="lang-label">Rust · Tauri</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/GAIR-NLP/XiaoAI" target="_blank">XiaoAI</a>
+        <span class="project-org">GAIR-NLP</span>
+      </div>
+      <p class="project-desc">面向个人用户的 AI Agent 助手，整合多种 AI 能力，覆盖日常工作与学习场景。</p>
+      <div class="project-footer">
+        <span class="lang-label">Agent</span>
+      </div>
+    </div>
+
+    <!-- surenny -->
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/surenny/Archon-KIP" target="_blank">Archon</a>
+        <span class="project-org">surenny</span>
+      </div>
+      <p class="project-desc">基于 Claude Code 的 Lean 4 数学证明自动形式化系统，plan agent + prover agent 双代理架构，支持项目级形式化。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-lean"></span>
+        <span class="lang-label">Lean 4</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/surenny/Autofomal-paper" target="_blank">Autofomal-paper</a>
+        <span class="project-org">surenny</span>
+      </div>
+      <p class="project-desc">形式化数学自动化相关研究论文。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-tex"></span>
+        <span class="lang-label">LaTeX</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <a class="project-name" href="https://github.com/junfeifeifei/SII-AI-FIRST" target="_blank">SII-AI-FIRST</a>
+        <span class="project-org">junfeifeifei</span>
+      </div>
+      <p class="project-desc">AI 优先的系统集成项目。</p>
+      <div class="project-footer">
+        <span class="lang-dot lang-python"></span>
+        <span class="lang-label">Python</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">Skills</p>
+  <h2 class="section-title">技术栈</h2>
+  <p class="section-desc">日常开发与研究中使用的工具和语言</p>
+  <div class="skills-grid">
+    <span class="skill-chip">Python</span>
+    <span class="skill-chip">PyTorch</span>
+    <span class="skill-chip">Rust</span>
+    <span class="skill-chip">TypeScript</span>
+    <span class="skill-chip">Lean 4</span>
+    <span class="skill-chip">Tauri</span>
+    <span class="skill-chip">LLM / AI Agent</span>
+    <span class="skill-chip">推荐系统</span>
+    <span class="skill-chip">形式化数学</span>
+    <span class="skill-chip">HTML / CSS</span>
+    <span class="skill-chip">LaTeX</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Wang Pan · <a href="https://github.com/Camille1024" target="_blank">github.com/Camille1024</a></p>
+</footer>
+
+</body>
+</html>
